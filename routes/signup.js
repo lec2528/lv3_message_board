@@ -1,9 +1,10 @@
 const express = require("express");
 
 const router = express.Router();
-const Signup = require("../schema/signup.js");
+const { Signup } = require("../models");
 
 const loginmiddleware = require("../Middleware/loginmiddleware.js");
+//const userinfos = require("../models/userinfos");
 
 //내 정보조회 api
 router.get("/signups/me", loginmiddleware, async (req, res) => {
@@ -16,20 +17,21 @@ router.get("/signups/me", loginmiddleware, async (req, res) => {
 });
 
 //회원가입 api
-router.post("/signups", async (req, res) => {
+router.post("/signUps", async (req, res) => {
   const { nickName, passWord, confirmPassword } = req.body;
+  console.log(nickName)
 
-  if (!nickName.match(/^[a-zA-Z0-9]{3,50}$/)) {
-    res
-      .status(412)
-      .json({
-        errorMessage:
-          "닉네임은 영어와 숫자만 포함한 3자리 이상 50자리 아하의 문자로 입력해주세요.",
-      });
+  const existUser = await Signup.findOne({ where: { nickName }})
+console.log(existUser)
+
+  if (!existUser.match(/^[a-zA-Z0-9]{3,50}$/)) {
+    res.status(412).json({
+      errorMessage:
+        "닉네임은 영어와 숫자만 포함한 3자리 이상 50자리 아하의 문자로 입력해주세요.",
+    });
     return;
   }
-  const existNickname = await Signup.findOne({ nickName: nickName });
-  if (existNickname) {
+  if (existUser) {
     res.status(412).json({ errorMessage: "중복된 닉네임입니다." });
     return;
   }
@@ -52,8 +54,8 @@ router.post("/signups", async (req, res) => {
   //     return;
   //   }
 
-  const signup = new Signup({ nickName, passWord });
-  await signup.save();
+  await Signup.create({ nickName, passWord });
+
   res.status(201).json({ message: "회원 가입에 성공하였습니다." });
 });
 

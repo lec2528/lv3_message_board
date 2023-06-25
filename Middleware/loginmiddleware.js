@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Signup = require("../schema/signup.js");
+const Signup = require("../models");
 
 module.exports = async (req, res, next) => {
   const { Authorization } = req.cookies;

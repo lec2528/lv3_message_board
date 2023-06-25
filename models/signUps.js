@@ -10,11 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      this.hasOne(models.UserInfos, {
-        soueceKey: "userId",
-        foreignKey: "UserId",
-      });
-
       this.hasMany(models.Posts, {
         soueceKey: "userId",
         foreignKey: "UserId",
@@ -22,33 +17,12 @@ module.exports = (sequelize, DataTypes) => {
 
     }
   }
-  signUps.init(
-    {
-      userId: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      nickName: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        unique: true,
-      },
-      passWord: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-      },
-    },
-    {
+  signUps.init({
+      userId:DataTypes.INTEGER,
+      nickName: DataTypes.STRING,
+      passWord:DataTypes.STRING,
+
+   }, {
       sequelize,
       modelName: "signUps",
     }

@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {Posts} = require("../models/posts.js")
-
-const connect = require("../schema/index.js");
-const Posts = require("../schema/posts.js");
+const {Signup} = require("../models")
 
 const loginmiddleware = require("../Middleware/loginmiddleware.js");
 
-connect();
+//connect();
 
 //게시글 조회
 router.get("/posts", async (req, res) => {
