@@ -2,9 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const postsRouter = require("./routes/posts.js");
-const signupRouter = require("./routes/signup.js");
-const loginRouter = require("./routes/login.js");
+const postsRouter = require("./routes/posts.route");
+const signupRouter = require("./routes/signup.route");
 
 const cookieParser = require("cookie-parser");
 
@@ -15,7 +14,7 @@ const cookieParser = require("cookie-parser");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/api", [postsRouter, signupRouter, loginRouter]);
+app.use("/api", [postsRouter, signupRouter]);
 
 app.listen(port, () => {
   console.log(port, "포트로 서버가 열렸어요!");

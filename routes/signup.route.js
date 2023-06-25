@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-const { Signup } = require("../models");
+const { signUps } = require("../models");
 
 const loginmiddleware = require("../Middleware/loginmiddleware.js");
 //const userinfos = require("../models/userinfos");
@@ -21,7 +21,7 @@ router.post("/signUps", async (req, res) => {
   const { nickName, passWord, confirmPassword } = req.body;
   console.log(nickName)
 
-  const existUser = await Signup.findOne({ where: { nickName }})
+  const existUser = await signUps.findOne({ where: { nickName }})
 console.log(existUser)
 
   if (!existUser.match(/^[a-zA-Z0-9]{3,50}$/)) {
@@ -57,6 +57,30 @@ console.log(existUser)
   await Signup.create({ nickName, passWord });
 
   res.status(201).json({ message: "회원 가입에 성공하였습니다." });
+
+});
+
+
+router.post("/login", async (req, res) => {
+  const { nickName, passWord } = req.body;
+
+  const signIn = await signUps.findOne({ nickName });
+  if (!signIn || passWord !== signIn.passWord) {
+    res.status(412).json({
+      errorMessage: "닉네임 또는 패스워드를 확인해주세요 ",
+    });
+    return;
+  }
+
+  // 로그인시 쿠키 생성
+  const token = jwt.sign({ signIn }, "custom-secret-key");
+  res.cookie("Authorization", `Bearer ${token}`);
+  res
+    .status(200)
+    .json({
+      token,
+      success: `안녕하세요${nickName}님 오늘도 행복한 하루 되세요!`,
+    });
 });
 
 module.exports = router;

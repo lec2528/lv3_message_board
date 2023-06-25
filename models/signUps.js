@@ -10,21 +10,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      this.hasMany(models.Posts, {
-        soueceKey: "userId",
-        foreignKey: "UserId",
-      });
-
+      // this.hasMany(models.Posts, {
+      //   soueceKey: "userId",
+      //   foreignKey: "UserId",
+      // });
     }
   }
-  signUps.init({
-      userId:DataTypes.INTEGER,
+  signUps.init(
+    {
       nickName: DataTypes.STRING,
-      passWord:DataTypes.STRING,
-
-   }, {
+      passWord: DataTypes.STRING,
+    },
+    {
       sequelize,
-      modelName: "signUps",
+      modelName: 'signUps',
     }
   );
   return signUps;

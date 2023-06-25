@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {Posts} = require("../models/posts.js")
-const {Signup} = require("../models")
+const {Signup} = require("../models/index.js")
 
 const loginmiddleware = require("../Middleware/loginmiddleware.js");
 
